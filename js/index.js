@@ -45,6 +45,7 @@ const loadAllCategoryId = async (allId) => {
     }
 
     const cardContainer = document.getElementById('card-container');
+    const verifiedIcon = document.getElementById('verified-icon').innerHTML;
 
     cardContainer.innerHTML="";
     data.data.forEach((id) => {
@@ -59,10 +60,17 @@ const loadAllCategoryId = async (allId) => {
                 <div class="card-body">
                     <div class="flex gap-2">
                         <div class="w-8 h-8">
-                            <img class="w-full h-full rounded-full" src=${id.authors[0].   profile_picture} />
+                            <img class="w-full h-full rounded-full" src=${id.authors[0].profile_picture} />
                         </div>
                         <div>
                             <h1 class="text-base font-bold">${id.title}</h1>
+                            <div class="flex">
+                                <p class="text-sm font-normal">${id.authors[0].profile_name}</p>
+                                <div>
+                                    ${id?.authors[0]?.verified? verifiedIcon : ''}
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
