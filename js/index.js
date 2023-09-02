@@ -27,7 +27,6 @@ const loadAllCategory = async () => {
 
 
 const loadAllCategoryId = async (allId) => {
-    // console.log(allId);
 
     const response = await fetch(
         `
@@ -37,6 +36,9 @@ const loadAllCategoryId = async (allId) => {
 
     const data = await response.json();
     const errorContainer = document.getElementById('error-container');
+
+    // for error field
+
     if(data.data.length === 0){
          errorContainer.classList.remove('hidden');
     }
@@ -47,16 +49,37 @@ const loadAllCategoryId = async (allId) => {
     const cardContainer = document.getElementById('card-container');
     const verifiedIcon = document.getElementById('verified-icon').innerHTML;
 
+    // for time convertion
+
+    function toHoursAndMinutes(totalSeconds) {
+        const totalMinutes = Math.floor(totalSeconds / 60);
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+
+        const result = hours + " hours " + minutes + " mins ago";
+      
+        return result;
+      }
+
     cardContainer.innerHTML="";
+
+    // for display card
+    
     data.data.forEach((id) => {
-        // console.log(id)
        
+        const time = toHoursAndMinutes(id.others.posted_date);
+
+
         const div = document.createElement("div");
         div.innerHTML = `
             <div class="card w-full bg-base-100 shadow-xl">
                 <figure><img class="w-full h-48"
                     src=${id.thumbnail}
-                  /></figure>
+                  />
+                  <div class="absolute bottom-[130px] right-1 bg-black text-white rounded">
+                        <p class="text-sm">${id?.others?.posted_date? time : ''}</p>
+                    </div>
+                  </figure>
                 <div class="card-body">
                     <div class="flex gap-2">
                         <div class="w-8 h-8">
@@ -70,7 +93,9 @@ const loadAllCategoryId = async (allId) => {
                                     ${id?.authors[0]?.verified? verifiedIcon : ''}
                                 </div>
                             </div>
-                            
+                            <div>
+                                <p class="text-sm font-normal">${id.others.views} VIEWS</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -83,16 +108,8 @@ const loadAllCategoryId = async (allId) => {
 loadAllCategory();
 loadAllCategoryId(1000);
 
+// for blog
 
-// testing
-const loadAllCategoryId2 = async () => {
-    // console.log(allId);
-
-    const response = await fetch(
-        "https://openapi.programming-hero.com/api/videos/category/1000"
-        );
-
-    const data = await response.json();
-    console.log(data.data);
+function blogBtn(){
+    window.location.href = 'blog.html';
 }
-loadAllCategoryId2();
