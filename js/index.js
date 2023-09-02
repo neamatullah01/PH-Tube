@@ -27,6 +27,8 @@ const loadAllCategory = async () => {
 
 
 const loadAllCategoryId = async (allId) => {
+    // console.log(allId);
+
     const response = await fetch(
         `
         https://openapi.programming-hero.com/api/videos/category/${allId}
@@ -34,13 +36,20 @@ const loadAllCategoryId = async (allId) => {
         );
 
     const data = await response.json();
+    const errorContainer = document.getElementById('error-container');
+    if(data.data.length === 0){
+         errorContainer.classList.remove('hidden');
+    }
+    else{
+        errorContainer.classList.add('hidden');
+    }
 
     const cardContainer = document.getElementById('card-container');
 
     cardContainer.innerHTML="";
-
     data.data.forEach((id) => {
-        console.log(id);
+        // console.log(id)
+       
         const div = document.createElement("div");
         div.innerHTML = `
             <div class="card w-full bg-base-100 shadow-xl">
@@ -48,20 +57,34 @@ const loadAllCategoryId = async (allId) => {
                     src=${id.thumbnail}
                   /></figure>
                 <div class="card-body">
-                 <h2 class="card-title">
-                    Shoes!
-                <div class="badge badge-secondary">NEW</div>
-                </h2>
-                <p>If a dog chews shoes whose shoes does he choose?</p>
-            <div class="card-actions justify-end">
-            <div class="badge badge-outline">Fashion</div> 
-            <div class="badge badge-outline">Products</div>
-      </div>
-    </div>
-  </div>
+                    <div class="flex gap-2">
+                        <div class="w-8 h-8">
+                            <img class="w-full h-full rounded-full" src=${id.authors[0].   profile_picture} />
+                        </div>
+                        <div>
+                            <h1 class="text-base font-bold">${id.title}</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
     `;
     cardContainer.appendChild(div);
     });
 }
 
 loadAllCategory();
+loadAllCategoryId(1000);
+
+
+// testing
+const loadAllCategoryId2 = async () => {
+    // console.log(allId);
+
+    const response = await fetch(
+        "https://openapi.programming-hero.com/api/videos/category/1000"
+        );
+
+    const data = await response.json();
+    console.log(data.data);
+}
+loadAllCategoryId2();
